@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+// Model para o atributo Música dentro da lista de reprodução
 @Embeddable
 @Getter
 @NoArgsConstructor

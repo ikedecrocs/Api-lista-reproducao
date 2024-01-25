@@ -8,6 +8,7 @@ import lombok.*;
 
 import java.util.List;
 
+// Model para a lista de reprodução
 @Table
 @Entity
 @Getter

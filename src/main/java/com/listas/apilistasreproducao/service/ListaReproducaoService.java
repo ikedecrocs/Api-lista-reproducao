@@ -17,6 +17,7 @@ public class ListaReproducaoService {
     @Autowired
     ListaReproducaoRepository listaReproducaoRepository;
 
+    // Método para listagem completa dos registros de lista de reprodução
     public List<ListaReproducao> listarListasReproducao() {
         List<ListaReproducao> listasReproducao = new ArrayList<>();
         listaReproducaoRepository.findAll().forEach(listasReproducao::add);
@@ -24,6 +25,7 @@ public class ListaReproducaoService {
         return listasReproducao;
     }
 
+    // Método para busca de uma lista de reprodução por nome. Em caso de falha na busca, uma exceção é gerada.
     public Optional<ListaReproducao> buscarListaReproducao(String nome) {
         Optional<ListaReproducao> listaReproducao = listaReproducaoRepository.findById(nome);
 
@@ -34,6 +36,7 @@ public class ListaReproducaoService {
         return listaReproducao;
     }
 
+    // Método para o cadastro de uma nova lista de reprodução. Em caso de nome inválido, uma exceção é gerada.
     public RespostaAdicionarListaReproducao adicionarListaReproducao(ListaReproducao listaReproducao) {
         if (listaReproducao.getNome() == null) {
             throw new IllegalArgumentException("Lista inválida");
@@ -47,6 +50,8 @@ public class ListaReproducaoService {
         return respostaAdicionarListaReproducao;
     }
 
+    // Método para exclusão de uma lista de reprodução pelo seu nome. Caso nenhum registro seja encontrado com este nome,
+    // uma exceção é gerada.
     public void excluirListaReproducao(String nome) {
         Optional<ListaReproducao> buscaListaReproducao = buscarListaReproducao(nome);
 

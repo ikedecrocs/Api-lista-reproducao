@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+// Controller para os endpoints relacionados a listas de reprodução (/lists)
 @RestController
 @RequestMapping("/lists")
 public class ListaReproducaoController {
@@ -19,6 +20,8 @@ public class ListaReproducaoController {
     @Autowired
     ListaReproducaoService listaReproducaoService;
 
+    // Enpoint para a listagem completa das listas de reprodução dentro do sistema.
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<ListaReproducao>> listarListasReproducao() {
         try {
@@ -29,6 +32,8 @@ public class ListaReproducaoController {
         }
     }
 
+    // Endpoint para a recuperar de um registro pelo seu nome. Em caso de falha na busca pelo nome, um erro 404 será disparado.
+    @CrossOrigin
     @GetMapping("/{nome}")
     public ResponseEntity<ListaReproducao> procurarListaReproducao(@PathVariable String nome) {
         try {
@@ -39,6 +44,8 @@ public class ListaReproducaoController {
         }
     }
 
+    // Endpoint para cadastro de novas listas de reprodução. Em caso de nome inválido (null), um erro 400 será disparado
+    @CrossOrigin
     @PostMapping
     public ResponseEntity adicionarListaReproducao(@RequestBody ListaReproducao listaReproducao) {
         try {
@@ -49,6 +56,8 @@ public class ListaReproducaoController {
         }
     }
 
+    // Endpoint para a exclusão de um registro. Em caso de falha na busca pelo nome, um erro 404 será disparado.
+    @CrossOrigin
     @DeleteMapping("/{nome}")
     public ResponseEntity excluirListaReproducao(@PathVariable String nome) {
         try {
