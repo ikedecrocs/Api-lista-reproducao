@@ -4,6 +4,7 @@ import com.listas.apilistasreproducao.dto.RespostaAdicionarListaReproducao;
 import com.listas.apilistasreproducao.model.ListaReproducao;
 import com.listas.apilistasreproducao.repository.ListaReproducaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,10 +27,18 @@ public class ListaReproducaoService {
     public Optional<ListaReproducao> buscarListaReproducao(String nome) {
         Optional<ListaReproducao> listaReproducao = listaReproducaoRepository.findById(nome);
 
+        if (listaReproducao.isEmpty()) {
+            throw new IllegalArgumentException("Lista não encontrada");
+        }
+
         return listaReproducao;
     }
 
     public RespostaAdicionarListaReproducao adicionarListaReproducao(ListaReproducao listaReproducao) {
+        if (listaReproducao.getNome() == null) {
+            throw new IllegalArgumentException("Lista inválida");
+        }
+
         RespostaAdicionarListaReproducao respostaAdicionarListaReproducao = new RespostaAdicionarListaReproducao();
         ListaReproducao dadosListaReproducao = listaReproducaoRepository.save(listaReproducao);
         respostaAdicionarListaReproducao.setListaReproducao(dadosListaReproducao);
@@ -39,6 +48,12 @@ public class ListaReproducaoService {
     }
 
     public void excluirListaReproducao(String nome) {
+        Optional<ListaReproducao> buscaListaReproducao = buscarListaReproducao(nome);
+
+        if (buscaListaReproducao.isEmpty()) {
+            throw new IllegalArgumentException("Lista não encontrada");
+        }
+
         listaReproducaoRepository.deleteById(nome);
     }
 

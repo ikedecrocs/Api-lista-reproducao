@@ -23,7 +23,6 @@ public class ListaReproducaoController {
     public ResponseEntity<List<ListaReproducao>> listarListasReproducao() {
         try {
             List<ListaReproducao> listasReproducao = listaReproducaoService.listarListasReproducao();
-
             return new ResponseEntity<>(listasReproducao, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -32,36 +31,32 @@ public class ListaReproducaoController {
 
     @GetMapping("/{nome}")
     public ResponseEntity<ListaReproducao> procurarListaReproducao(@PathVariable String nome) {
-        Optional<ListaReproducao> listaReproducao = listaReproducaoService.buscarListaReproducao(nome);
-
-        if (listaReproducao.isPresent()) {
+        try {
+            Optional<ListaReproducao> listaReproducao = listaReproducaoService.buscarListaReproducao(nome);
             return new ResponseEntity<>(listaReproducao.get(), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
     public ResponseEntity adicionarListaReproducao(@RequestBody ListaReproducao listaReproducao) {
-        if (listaReproducao.getNome() == null) {
+        try {
+            RespostaAdicionarListaReproducao RespostaListaReproducao = listaReproducaoService.adicionarListaReproducao(listaReproducao);
+            return new ResponseEntity<>(RespostaListaReproducao, HttpStatus.CREATED);
+        } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        RespostaAdicionarListaReproducao RespostaListaReproducao = listaReproducaoService.adicionarListaReproducao(listaReproducao);
-
-        return new ResponseEntity<>(RespostaListaReproducao, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{nome}")
     public ResponseEntity excluirListaReproducao(@PathVariable String nome) {
-        Optional<ListaReproducao> buscaListaReproducao = listaReproducaoService.buscarListaReproducao(nome);
-
-        if (buscaListaReproducao.isPresent()) {
+        try {
             listaReproducaoService.excluirListaReproducao(nome);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }
